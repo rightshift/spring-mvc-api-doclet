@@ -1,0 +1,58 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>$headTitle</title>
+    </head>
+    <body>
+        <h1>HTTP API</h1>
+
+        #foreach ($call in $restCalls)
+            $call.getDescription()<br><br>
+
+            #if ($call.getMethod().equals("GET"))
+                #set($bgColour = "lightgreen")
+            #elseif ($call.getMethod().equals("POST"))
+                #set($bgColour = "lightblue")
+            #elseif ($call.getMethod().equals("PUT"))
+                #set($bgColour = "yellow")
+            #elseif ($call.getMethod().equals("DELETE"))
+                #set($bgColour = "red")
+            #else
+                #set($bgColour = "purple")
+            #end
+            <span style="background-color: $bgColour">$call.getMethod()</span> <b>$call.getUrl()
+            #set($sep = "?")
+            #foreach ($var in $call.getRequestParams())
+                $sep
+                $var.getName()=
+                #set($sep = "&")
+            #end
+            </b>
+
+            <div style="margin:5px;">
+                #if ($call.getPathVariables().size() > 0)
+                    <br>Path Variables<br>
+                #end
+                #foreach ($var in $call.getPathVariables())
+                    <i>$var.getName()</i> - $var.getDescription()<br>
+                #end
+            </div>
+            <div style="margin:5px;">
+                #if ($call.getRequestParams().size() > 0)
+                    <br>Request Params</b><br>
+                #end
+                #foreach ($var in $call.getRequestParams())
+                    <i>$var.getName()</i> - $var.getDescription()<br>
+                #end
+            </div>
+            #if ($call.getRequestBody())
+                <div style="margin:5px;">
+                    <br>Request Body:<br>
+<pre>
+$call.getRequestBody().getStructure()<br>
+</pre>
+                </div>
+            #end
+            <hr width="60%" align="left">
+        #end
+    </body
+</html>
